@@ -21,7 +21,8 @@ public class SunriseSunsetTime {
     @JsonProperty("sunset")
     private Long sunsetTimeStamp;
 
-    @OneToOne(mappedBy = "sunsetSunriseTime")
+    @ManyToOne
+    @JoinColumn(name = "city_id")
     private City city;
 
 
