@@ -30,7 +30,8 @@ public class City {
     @JsonProperty("state")
     private String state;
 
-    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "sunset_sunrise_time_id")
     private SunriseSunsetTime sunriseSunsetTime;
 
     public City() {}
