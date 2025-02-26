@@ -3,6 +3,8 @@ package com.codecool.solarwatch.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "cities")
 public class City {
@@ -30,8 +32,6 @@ public class City {
     @JsonProperty("state")
     private String state;
 
-    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL)
-    private SunriseSunsetTime sunriseSunsetTime;
 
     public City() {}
 
