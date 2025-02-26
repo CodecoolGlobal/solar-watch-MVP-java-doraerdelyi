@@ -30,6 +30,9 @@ public class City {
     @JsonProperty("state")
     private String state;
 
+    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL)
+    private SunriseSunsetTime sunriseSunsetTime;
+
     public City() {}
 
     public City(String name, double latitude, double longitude, String country, String state) {
