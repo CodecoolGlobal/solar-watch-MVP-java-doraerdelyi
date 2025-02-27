@@ -22,8 +22,8 @@ public class SolarWatchController {
 
     @GetMapping("/sunrise-sunset")
     public SunsetSunriseDTO getSunriseAndSunset(@RequestParam String city, @RequestParam(required = false) LocalDate
-date, @RequestParam(defaultValue = "UTC") String timezone) {
-        return solarWatchService.getSunsetAndSunriseByCity(city, date, timezone);
+date) {
+        return solarWatchService.getSunsetSunriseTimesByCityAndDate(city, date);
     }
 
 }
