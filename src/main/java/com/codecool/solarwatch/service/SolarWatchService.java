@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class SolarWatchService {
@@ -45,5 +46,14 @@ public class SolarWatchService {
             throw new NoSunriseSunsetDataException();
         }
         return report.results();
+    }
+
+    public SunsetSunrise getSunsetSunriseTimesByCityAndDate(String cityName, LocalDate date) {
+        Optional<City> currentCity = this.cityRepository.findByName(cityName);
+        if (currentCity.isPresent()) {
+
+        } else {
+
+        }
     }
 }
