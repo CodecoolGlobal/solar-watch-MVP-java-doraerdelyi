@@ -38,8 +38,8 @@ public class SolarWatchService {
             Long cityId = city.getId();
             Optional<SunriseSunsetTime> currentSunriseSunsetTime = this.sunriseSunsetTimeRepository.findByCityIdAndDate(cityId, currentDate);
             if (currentSunriseSunsetTime.isPresent()) {
-                LocalDateTime sunriseTime = currentSunriseSunsetTime.get().getSunriseTime();
-                LocalDateTime sunsetTime = currentSunriseSunsetTime.get().getSunsetTime();
+                String sunriseTime = currentSunriseSunsetTime.get().getSunriseTime();
+                String sunsetTime = currentSunriseSunsetTime.get().getSunsetTime();
                 return new SunsetSunriseDTO(sunriseTime, sunsetTime);
             } else {
                 double latitude = city.getLatitude();
