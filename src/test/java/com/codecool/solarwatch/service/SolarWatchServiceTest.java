@@ -1,10 +1,8 @@
 
 package com.codecool.solarwatch.service;
 
-import com.codecool.solarwatch.model.GeolocationReport;
 import com.codecool.solarwatch.model.NoSuchCityException;
-import com.codecool.solarwatch.model.SunsetSunrise;
-import com.codecool.solarwatch.model.SunsetSunriseReport;
+import com.codecool.solarwatch.model.SunsetSunriseDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,12 +26,12 @@ public class SolarWatchServiceTest {
     void testGetSunsetAndSunriseByCity_success() {
         String city = "Budapest";
         GeolocationReport[] geolocationReports = {new GeolocationReport(47.4979937, 19.0403594)};
-        SunsetSunrise sunsetSunrise = new SunsetSunrise("5:47:05", "16:08:45");
+        SunsetSunriseDTO sunsetSunrise = new SunsetSunriseDTO("5:47:05", "16:08:45");
         SunsetSunriseReport sunsetSunriseReport = new SunsetSunriseReport(sunsetSunrise, "UTC");
 
         when(restTemplate.getForObject(anyString(), eq(GeolocationReport[].class))).thenReturn(geolocationReports);
         when(restTemplate.getForObject(anyString(), eq(SunsetSunriseReport.class))).thenReturn(sunsetSunriseReport);
-        SunsetSunrise result = solarWatchService.getSunsetAndSunriseByCity(city, null, "UTC");
+        SunsetSunriseDTO result = solarWatchService.getSunsetAndSunriseByCity(city, null, "UTC");
 
         assertNotNull(result);
         assertEquals("5:47:05", result.sunrise());

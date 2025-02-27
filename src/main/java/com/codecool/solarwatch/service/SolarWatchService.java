@@ -30,7 +30,7 @@ public class SolarWatchService {
         this.sunriseSunsetTimeRepository = sunriseSunsetTimeRepository;
     }
 
-    public SunsetSunrise getSunsetSunriseTimesByCityAndDate(String cityName, LocalDate date) {
+    public SunsetSunriseDTO getSunsetSunriseTimesByCityAndDate(String cityName, LocalDate date) {
         Optional<City> currentCity = this.cityRepository.findByName(cityName);
         if (currentCity.isPresent()) {
             Long cityId = currentCity.get().getId();
@@ -38,13 +38,13 @@ public class SolarWatchService {
             if (currentSunriseSunsetTime.isPresent()) {
                 LocalDateTime sunriseTime = currentSunriseSunsetTime.get().getSunriseTime();
                 LocalDateTime sunsetTime = currentSunriseSunsetTime.get().getSunsetTime();
-                return new SunsetSunrise(sunriseTime, sunsetTime);
+                return new SunsetSunriseDTO(sunriseTime, sunsetTime);
             } else {
                 double latitude = currentCity.get().getLatitude();
                 double longitude = currentCity.get().getLongitude();
                 SunriseSunsetTime sunriseSunsetTime = fetchSunriseSunsetTimeFromAPI(latitude, longitude, date);
                 this.sunriseSunsetTimeRepository.save(sunriseSunsetTime);
-                return new SunsetSunrise(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
+                return new SunsetSunriseDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
                 }
         } else {
             City city = fetchCityFromAPI(cityName);
@@ -53,7 +53,7 @@ public class SolarWatchService {
             double longitude = city.getLongitude();
             SunriseSunsetTime sunriseSunsetTime = fetchSunriseSunsetTimeFromAPI(latitude, longitude, date);
             this.sunriseSunsetTimeRepository.save(sunriseSunsetTime);
-            return new SunsetSunrise(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
+            return new SunsetSunriseDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
         }
     }
 
