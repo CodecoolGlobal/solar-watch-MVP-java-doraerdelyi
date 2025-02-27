@@ -4,7 +4,6 @@ package com.codecool.solarwatch.service;
 import com.codecool.solarwatch.model.GeolocationReport;
 import com.codecool.solarwatch.model.NoSuchCityException;
 import com.codecool.solarwatch.model.SunsetSunriseDTO;
-import com.codecool.solarwatch.model.SunsetSunriseReport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
