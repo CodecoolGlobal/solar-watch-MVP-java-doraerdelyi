@@ -30,18 +30,11 @@ public class SunriseSunsetTime {
 
     public SunriseSunsetTime() {}
 
-
-    private LocalDateTime convertToLocalDateTime(Long timeStamp) {
-        if (timeStamp == null) return null;
-        return Instant.ofEpochSecond(timeStamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    public void setDate(LocalDate date) {
+    public SunriseSunsetTime(String sunriseTime, String sunsetTime, LocalDate date, City city) {
+        this.sunriseTime = sunriseTime;
+        this.sunsetTime = sunsetTime;
         this.date = date;
+        this.city = city;
     }
 
     public String getSunriseTime() {
