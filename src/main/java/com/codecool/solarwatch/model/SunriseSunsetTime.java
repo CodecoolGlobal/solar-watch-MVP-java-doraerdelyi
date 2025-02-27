@@ -17,10 +17,10 @@ public class SunriseSunsetTime {
     private Long id;
 
     @JsonProperty("sunrise")
-    private Long sunriseTimeStamp;
+    private String sunriseTime;
 
     @JsonProperty("sunset")
-    private Long sunsetTimeStamp;
+    private String sunsetTime;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
@@ -30,15 +30,6 @@ public class SunriseSunsetTime {
 
     public SunriseSunsetTime() {}
 
-    @Transient
-    public LocalDateTime getSunriseTime() {
-        return convertToLocalDateTime(sunriseTimeStamp);
-    }
-
-    @Transient
-    public LocalDateTime getSunsetTime() {
-        return convertToLocalDateTime(sunsetTimeStamp);
-    }
 
     private LocalDateTime convertToLocalDateTime(Long timeStamp) {
         if (timeStamp == null) return null;
@@ -51,5 +42,13 @@ public class SunriseSunsetTime {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getSunriseTime() {
+        return sunriseTime;
+    }
+
+    public String getSunsetTime() {
+        return sunsetTime;
     }
 }
