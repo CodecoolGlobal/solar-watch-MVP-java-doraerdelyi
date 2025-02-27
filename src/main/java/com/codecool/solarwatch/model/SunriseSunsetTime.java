@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -25,6 +26,7 @@ public class SunriseSunsetTime {
     @JoinColumn(name = "city_id")
     private City city;
 
+    private LocalDate date;
 
     public SunriseSunsetTime() {}
 
@@ -43,23 +45,11 @@ public class SunriseSunsetTime {
         return Instant.ofEpochSecond(timeStamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
-    public City getCity() {
-        return city;
-    }
-
     public void setCity(City city) {
         this.city = city;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getSunriseTimeStamp() {
-        return sunriseTimeStamp;
-    }
-
-    public Long getSunsetTimeStamp() {
-        return sunsetTimeStamp;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
