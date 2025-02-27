@@ -6,9 +6,9 @@ import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -22,10 +22,10 @@ public class SolarWatchService {
     @Value("${openweather.api.key}")
     private String OPENWEATHER_API_KEY;
 
-    private final RestTemplate restTemplate;
+    private final WebClient webClient;
 
-    public SolarWatchService(RestTemplate restTemplate, CityRepository cityRepository, SunriseSunsetTimeRepository sunriseSunsetTimeRepository) {
-        this.restTemplate = restTemplate;
+    public SolarWatchService(WebClient webClient, CityRepository cityRepository, SunriseSunsetTimeRepository sunriseSunsetTimeRepository) {
+        this.webClient = webClient;
         this.cityRepository = cityRepository;
         this.sunriseSunsetTimeRepository = sunriseSunsetTimeRepository;
     }
@@ -64,7 +64,7 @@ public class SolarWatchService {
     private City fetchCityFromAPI(String cityName) {
         int limit = 1;
         String geocodingUrl = String.format(OPENWEATHER_API_URL, cityName, limit, OPENWEATHER_API_KEY);
-        City[] cityResponse = restTemplate.getForObject(geocodingUrl, City[].class);
+        City[] cityResponse = this.webClient.get().uri(geocodingUrl).retrieve().bodyToMono(City[].class).block();
         if (cityResponse == null || cityResponse.length == 0) {
             throw new NoSuchCityException();
         }
@@ -73,7 +73,7 @@ public class SolarWatchService {
 
     private SunsetSunriseResponseDTO fetchSunriseSunsetTimeFromAPI(double latitude, double longitude, LocalDate date) {
         String sunsetSunriseUrl = String.format(SUNRISE_SUNSET_API_URL, latitude, longitude, date.toString());
-        SunsetSunriseResponseDTO responseDTO = restTemplate.getForObject(sunsetSunriseUrl, SunsetSunriseResponseDTO.class);
+        SunsetSunriseResponseDTO responseDTO = this.webClient.get().uri(sunsetSunriseUrl).retrieve().bodyToMono(SunsetSunriseResponseDTO.class).block();
         if (responseDTO == null) {
             throw new NoSunriseSunsetDataException();
         }
