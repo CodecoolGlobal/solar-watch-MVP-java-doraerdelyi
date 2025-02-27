@@ -9,7 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -27,7 +28,13 @@ class SolarWatchServiceTest {
     private SunriseSunsetTimeRepository sunriseSunsetTimeRepository;
 
     @Mock
-    private RestTemplate restTemplate;
+    private WebClient webClient;
+
+    @Mock
+    private WebClient.RequestHeadersUriSpec requestHeadersUriSpec;
+
+    @Mock
+    private WebClient.ResponseSpec responseSpec;
 
     @InjectMocks
     private SolarWatchService solarWatchService;
@@ -64,29 +71,34 @@ class SolarWatchServiceTest {
 
         verify(cityRepository, times(1)).findByName("Budapest");
         verify(sunriseSunsetTimeRepository, times(1)).findByCityIdAndDate(testCity.getId(), testDate);
-        verifyNoInteractions(restTemplate);
+        verifyNoInteractions(webClient);
     }
 
     @Test
     void getSunsetSunriseTimesByCityAndDate_ShouldFetchFromAPI_WhenDataIsNotInDatabase() {
         when(cityRepository.findByName("Budapest")).thenReturn(Optional.of(testCity));
         when(sunriseSunsetTimeRepository.findByCityIdAndDate(testCity.getId(), testDate)).thenReturn(Optional.empty());
-        when(restTemplate.getForObject(anyString(), eq(SunsetSunriseResponseDTO.class))).thenReturn(testApiResponse);
+        when(webClient.get()).thenReturn(this.requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(anyString())).thenReturn(this.requestHeadersUriSpec);
+        when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(SunsetSunriseResponseDTO.class)).thenReturn(Mono.just(testApiResponse));
 
         SunsetSunriseDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
 
         assertEquals("06:30:00", result.sunrise());
         assertEquals("18:45:00", result.sunset());
 
-        verify(restTemplate, times(1)).getForObject(anyString(), eq(SunsetSunriseResponseDTO.class));
+        verify(webClient, times(1)).get();
         verify(sunriseSunsetTimeRepository, times(1)).save(any(SunriseSunsetTime.class));
     }
 
     @Test
     void getSunsetSunriseTimesByCityAndDate_ShouldFetchCityFromAPI_WhenCityIsNotInDatabase() {
         when(cityRepository.findByName("Budapest")).thenReturn(Optional.empty());
-        when(restTemplate.getForObject(anyString(), eq(City[].class))).thenReturn(new City[]{testCity});
-        when(restTemplate.getForObject(anyString(), eq(SunsetSunriseResponseDTO.class))).thenReturn(testApiResponse);
+        when(webClient.get()).thenReturn(this.requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(SunsetSunriseResponseDTO.class)).thenReturn(Mono.just(testApiResponse));
 
         SunsetSunriseDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
 
@@ -100,7 +112,10 @@ class SolarWatchServiceTest {
     @Test
     void getSunsetSunriseTimesByCityAndDate_ShouldThrowException_WhenCityNotFoundInAPI() {
         when(cityRepository.findByName("UnknownCity")).thenReturn(Optional.empty());
-        when(restTemplate.getForObject(anyString(), eq(City[].class))).thenReturn(new City[]{});
+        when(webClient.get()).thenReturn(this.requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(City[].class)).thenReturn(Mono.just(new City[]{}));
 
         assertThrows(NoSuchCityException.class, () ->
                 solarWatchService.getSunsetSunriseTimesByCityAndDate("UnknownCity", testDate)
@@ -114,7 +129,10 @@ class SolarWatchServiceTest {
     void getSunsetSunriseTimesByCityAndDate_ShouldThrowException_WhenAPIResponseIsNull() {
         when(cityRepository.findByName("Budapest")).thenReturn(Optional.of(testCity));
         when(sunriseSunsetTimeRepository.findByCityIdAndDate(testCity.getId(), testDate)).thenReturn(Optional.empty());
-        when(restTemplate.getForObject(anyString(), eq(SunsetSunriseResponseDTO.class))).thenReturn(null);
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(SunsetSunriseResponseDTO.class)).thenReturn(Mono.empty());
 
         assertThrows(NoSunriseSunsetDataException.class, () ->
                 solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate)
