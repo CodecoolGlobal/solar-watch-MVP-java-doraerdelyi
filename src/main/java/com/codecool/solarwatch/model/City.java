@@ -65,4 +65,8 @@ public class City {
     public String getState() {
         return state;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
