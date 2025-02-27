@@ -38,7 +38,7 @@ public class SolarWatchControllerTest {
     void testGetSunriseAndSunset_success() throws Exception {
         String city = "Budapest";
         SunsetSunriseDTO sunriseSunset = new SunsetSunriseDTO("5:47:05", "16:08:45");
-        when(solarWatchService.getSunsetAndSunriseByCity(city, null, "UTC")).thenReturn(sunriseSunset);
+        when(solarWatchService.getSunsetSunriseTimesByCityAndDate(city, null)).thenReturn(sunriseSunset);
         mockMvc.perform(get("/api/solarwatch/sunrise-sunset?city=" + city))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sunrise").value("5:47:05"))
@@ -48,7 +48,7 @@ public class SolarWatchControllerTest {
     @Test
     void testGetSunriseAndSunset_cityNotFound() throws Exception {
         String city = "MyCity";
-        when(solarWatchService.getSunsetAndSunriseByCity(city, null, "UTC"))
+        when(solarWatchService.getSunsetSunriseTimesByCityAndDate(city, null))
                 .thenThrow(new NoSuchCityException());
 
         mockMvc.perform(get("/api/solarwatch/sunrise-sunset?city=" + city))
