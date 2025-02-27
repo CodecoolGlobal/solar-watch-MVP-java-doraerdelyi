@@ -21,7 +21,7 @@ public class SolarWatchService {
         this.restTemplate = restTemplate;
     }
 
-    public SunsetSunrise getSunsetAndSunriseByCity(String city, LocalDate date, String timezone) {
+    public SunsetSunriseDTO getSunsetAndSunriseByCity(String city, LocalDate date, String timezone) {
         int limit = 1;
         String geocodingUrl = String.format(OPENWEATHER_API_URL, city, limit, OPENWEATHER_API_KEY);
         GeolocationReport[] geocodingResponse = restTemplate.getForObject(geocodingUrl, GeolocationReport[].class);
