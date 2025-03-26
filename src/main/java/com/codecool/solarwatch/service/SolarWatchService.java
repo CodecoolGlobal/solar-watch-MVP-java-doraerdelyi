@@ -1,11 +1,12 @@
 package com.codecool.solarwatch.service;
 
+import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
+import com.codecool.solarwatch.DTO.SunsetSunriseResponseDTO;
 import com.codecool.solarwatch.model.*;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;

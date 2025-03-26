@@ -1,7 +1,7 @@
 
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.model.SunsetSunriseDTO;
+import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
 import com.codecool.solarwatch.service.SolarWatchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

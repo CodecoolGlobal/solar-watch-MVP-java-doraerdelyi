@@ -1,6 +1,6 @@
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.model.SunsetSunriseDTO;
+import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
 import com.codecool.solarwatch.service.SolarWatchService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

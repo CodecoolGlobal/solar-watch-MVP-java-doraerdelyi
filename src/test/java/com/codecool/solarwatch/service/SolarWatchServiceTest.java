@@ -1,5 +1,7 @@
 package com.codecool.solarwatch.service;
 
+import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
+import com.codecool.solarwatch.DTO.SunsetSunriseResponseDTO;
 import com.codecool.solarwatch.model.*;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
