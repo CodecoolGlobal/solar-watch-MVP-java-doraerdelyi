@@ -1,0 +1,35 @@
+package com.codecool.solarwatch.security.service;
+
+import com.codecool.solarwatch.model.Role;
+import com.codecool.solarwatch.model.SunriseSunsetUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class UserDetailsServiceImplementation implements UserDetailsService {
+
+    private final SunriseSunsetUserRepository sunriseSunsetUserRepository;
+
+    @Autowired
+    public UserDetailsServiceImplementation(SunriseSunsetUserRepository sunriseSunsetUserRepository) {
+        this.sunriseSunsetUserRepository = sunriseSunsetUserRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        SunriseSunsetUser sunriseSunsetUser = sunriseSunsetUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        List<SimpleGrantedAuthority> roles = new ArrayList<>();
+        for (Role role : sunriseSunsetUser.getRoles()) {
+            roles.add(new SimpleGrantedAuthority(role.getRoleType().toString()));
+        }
+        return new SunriseSunsetUser(sunriseSunsetUser.getEmail(), sunriseSunsetUser.getPassword(), roles);
+    }
+}
