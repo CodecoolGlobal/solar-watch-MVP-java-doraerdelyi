@@ -54,6 +54,10 @@ public class City {
         }
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public UUID getPublicId() {
         return publicId;
     }
