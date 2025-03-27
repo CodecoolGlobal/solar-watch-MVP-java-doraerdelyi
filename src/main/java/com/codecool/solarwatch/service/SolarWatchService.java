@@ -17,8 +17,8 @@ public class SolarWatchService {
     private static final String OPENWEATHER_API_URL = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%s&appid=%s";
     private static final String SUNRISE_SUNSET_API_URL = "https://api.sunrise-sunset.org/json?lat=%s&lng=%s&date=%s";
 
-    private CityRepository cityRepository;
-    private SunriseSunsetTimeRepository sunriseSunsetTimeRepository;
+    private final CityRepository cityRepository;
+    private final SunriseSunsetTimeRepository sunriseSunsetTimeRepository;
 
     @Value("${openweather.api.key}")
     private String OPENWEATHER_API_KEY;
@@ -94,14 +94,14 @@ public class SolarWatchService {
 
     public CityDTO updateCity(UUID publicId, CityUpdateDTO cityUpdateDTO) {
         String state = cityUpdateDTO.state() == null ? "Unknown" : cityUpdateDTO.state();
-        City city = this.cityRepository.findByPublicId(publicId).map(city -> {
-            city.setName(cityUpdateDTO.name());
-            city.setLatitude(cityUpdateDTO.latitude());
-            city.setLongitude(cityUpdateDTO.longitude());
-            city.setCountry(cityUpdateDTO.country());
-            city.setState(state);
-            return this.cityRepository.save(city);
-        }).orElseThrow(() -> new NoSuchCityException());
+        City city = this.cityRepository.findByPublicId(publicId).map(currentCity -> {
+            currentCity.setName(cityUpdateDTO.name());
+            currentCity.setLatitude(cityUpdateDTO.latitude());
+            currentCity.setLongitude(cityUpdateDTO.longitude());
+            currentCity.setCountry(cityUpdateDTO.country());
+            currentCity.setState(state);
+            return this.cityRepository.save(currentCity);
+        }).orElseThrow(NoSuchCityException::new);
         return new CityDTO(city.getName(), city.getLatitude(), city.getLongitude(), city.getCountry(), city.getState());
     }
 
@@ -110,12 +110,12 @@ public class SolarWatchService {
     }
 
     public SunriseSunsetDTO createSunriseSunsetTimes(SunriseSunsetCreateDTO sunriseSunsetCreateDTO) {
-        City city = this.cityRepository.findByName(sunriseSunsetCreateDTO.cityName()).orElse(() -> fetchCityFromAPI(sunriseSunsetCreateDTO.cityName()));
+        City city = this.cityRepository.findByName(sunriseSunsetCreateDTO.cityName()).orElseGet(() -> fetchCityFromAPI(sunriseSunsetCreateDTO.cityName()));
         SunriseSunsetTime sunriseSunsetTime = this.sunriseSunsetTimeRepository.save(new SunriseSunsetTime(sunriseSunsetCreateDTO.sunrise(), sunriseSunsetCreateDTO.sunset(), sunriseSunsetCreateDTO.date(), city));
         return new SunriseSunsetDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
     }
 
-    public SunriseSunsetDTO updateSunriseSunsetTimes(SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
+    public SunriseSunsetDTO updateSunriseSunsetTimes(UUID publicId, SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
         City city = this.cityRepository.findByName(sunriseSunsetUpdateDTO.cityName()).get();
         SunriseSunsetTime sunriseSunsetTime = this.sunriseSunsetTimeRepository.findByCityIdAndDate(city.getId(), sunriseSunsetUpdateDTO.date()).map(sunriseSunset -> {
             sunriseSunset.setSunriseTime(sunriseSunsetUpdateDTO.sunrise());
