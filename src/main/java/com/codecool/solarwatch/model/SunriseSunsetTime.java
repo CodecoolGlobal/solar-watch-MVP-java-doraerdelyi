@@ -26,7 +26,7 @@ public class SunriseSunsetTime {
     @JsonProperty("sunset")
     private String sunsetTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "city_id")
     private City city;
 
@@ -62,5 +62,9 @@ public class SunriseSunsetTime {
 
     public void setSunsetTime(String sunsetTime) {
         this.sunsetTime = sunsetTime;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

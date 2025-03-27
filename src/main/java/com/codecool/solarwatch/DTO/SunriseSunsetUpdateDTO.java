@@ -1,4 +1,6 @@
 package com.codecool.solarwatch.DTO;
 
-public record SunriseSunsetUpdateDTO(String sunrise, String sunset) {
+import java.time.LocalDate;
+
+public record SunriseSunsetUpdateDTO(String sunrise, String sunset, String cityName, LocalDate date) {
 }
