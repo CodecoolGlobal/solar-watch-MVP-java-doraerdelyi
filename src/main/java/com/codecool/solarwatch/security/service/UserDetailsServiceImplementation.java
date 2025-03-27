@@ -5,6 +5,7 @@ import com.codecool.solarwatch.model.SunriseSunsetUser;
 import com.codecool.solarwatch.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +32,6 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
         for (Role role : sunriseSunsetUser.getRoles()) {
             roles.add(new SimpleGrantedAuthority(role.getRoleType().toString()));
         }
-        return new SunriseSunsetUser(sunriseSunsetUser.getEmail(), sunriseSunsetUser.getPassword(), roles);
+        return new User(sunriseSunsetUser.getEmail(), sunriseSunsetUser.getPassword(), roles);
     }
 }
