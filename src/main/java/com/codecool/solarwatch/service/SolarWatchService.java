@@ -1,7 +1,7 @@
 package com.codecool.solarwatch.service;
 
-import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
-import com.codecool.solarwatch.DTO.SunsetSunriseResponseDTO;
+import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
+import com.codecool.solarwatch.DTO.SunriseSunsetResponseDTO;
 import com.codecool.solarwatch.model.*;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
@@ -31,7 +31,7 @@ public class SolarWatchService {
         this.sunriseSunsetTimeRepository = sunriseSunsetTimeRepository;
     }
 
-    public SunsetSunriseDTO getSunsetSunriseTimesByCityAndDate(String cityName, LocalDate date) {
+    public SunriseSunsetDTO getSunsetSunriseTimesByCityAndDate(String cityName, LocalDate date) {
         Optional<City> currentCity = this.cityRepository.findByName(cityName);
         LocalDate currentDate = date == null ? LocalDate.now() : date;
         if (currentCity.isPresent()) {
@@ -41,24 +41,24 @@ public class SolarWatchService {
             if (currentSunriseSunsetTime.isPresent()) {
                 String sunriseTime = currentSunriseSunsetTime.get().getSunriseTime();
                 String sunsetTime = currentSunriseSunsetTime.get().getSunsetTime();
-                return new SunsetSunriseDTO(sunriseTime, sunsetTime);
+                return new SunriseSunsetDTO(sunriseTime, sunsetTime);
             } else {
                 double latitude = city.getLatitude();
                 double longitude = city.getLongitude();
-                SunsetSunriseResponseDTO response = fetchSunriseSunsetTimeFromAPI(latitude, longitude, currentDate);
+                SunriseSunsetResponseDTO response = fetchSunriseSunsetTimeFromAPI(latitude, longitude, currentDate);
                 SunriseSunsetTime sunriseSunsetTime = convertToSunriseSunsetTime(response, currentDate, city);
                 this.sunriseSunsetTimeRepository.save(sunriseSunsetTime);
-                return new SunsetSunriseDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
+                return new SunriseSunsetDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
                 }
         } else {
             City city = fetchCityFromAPI(cityName);
             this.cityRepository.save(city);
             double latitude = city.getLatitude();
             double longitude = city.getLongitude();
-            SunsetSunriseResponseDTO response = fetchSunriseSunsetTimeFromAPI(latitude, longitude, currentDate);
+            SunriseSunsetResponseDTO response = fetchSunriseSunsetTimeFromAPI(latitude, longitude, currentDate);
             SunriseSunsetTime sunriseSunsetTime = convertToSunriseSunsetTime(response, currentDate, city);
             this.sunriseSunsetTimeRepository.save(sunriseSunsetTime);
-            return new SunsetSunriseDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
+            return new SunriseSunsetDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
         }
     }
 
@@ -72,16 +72,16 @@ public class SolarWatchService {
         return cityResponse[0];
     }
 
-    private SunsetSunriseResponseDTO fetchSunriseSunsetTimeFromAPI(double latitude, double longitude, LocalDate date) {
+    private SunriseSunsetResponseDTO fetchSunriseSunsetTimeFromAPI(double latitude, double longitude, LocalDate date) {
         String sunsetSunriseUrl = String.format(SUNRISE_SUNSET_API_URL, latitude, longitude, date.toString());
-        SunsetSunriseResponseDTO responseDTO = this.webClient.get().uri(sunsetSunriseUrl).retrieve().bodyToMono(SunsetSunriseResponseDTO.class).block();
+        SunriseSunsetResponseDTO responseDTO = this.webClient.get().uri(sunsetSunriseUrl).retrieve().bodyToMono(SunriseSunsetResponseDTO.class).block();
         if (responseDTO == null) {
             throw new NoSunriseSunsetDataException();
         }
         return responseDTO;
     }
 
-    private SunriseSunsetTime convertToSunriseSunsetTime(SunsetSunriseResponseDTO responseDTO, LocalDate date, City city) {
+    private SunriseSunsetTime convertToSunriseSunsetTime(SunriseSunsetResponseDTO responseDTO, LocalDate date, City city) {
         return new SunriseSunsetTime(responseDTO.results().sunrise(), responseDTO.results().sunset(), date, city);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "cities")
@@ -12,6 +13,9 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private UUID publicId;
 
     @Column(nullable = false)
     @JsonProperty("name")
@@ -32,7 +36,8 @@ public class City {
     @JsonProperty("state")
     private String state;
 
-    public City() {}
+    public City() {
+    }
 
     public City(String name, double latitude, double longitude, String country, String state) {
         this.name = name;
@@ -42,8 +47,15 @@ public class City {
         this.state = state;
     }
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    protected void onCreate() {
+        if (this.publicId == null) {
+            this.publicId = UUID.randomUUID();
+        }
+    }
+
+    public UUID getPublicId() {
+        return publicId;
     }
 
     public String getName() {
@@ -66,7 +78,23 @@ public class City {
         return state;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

@@ -1,7 +1,7 @@
 
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
+import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
 import com.codecool.solarwatch.service.SolarWatchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class SolarWatchControllerTest {
     @Test
     void testGetSunriseAndSunset_success() throws Exception {
         String city = "Budapest";
-        SunsetSunriseDTO sunriseSunset = new SunsetSunriseDTO("5:47:05", "16:08:45");
+        SunriseSunsetDTO sunriseSunset = new SunriseSunsetDTO("5:47:05", "16:08:45");
         when(solarWatchService.getSunsetSunriseTimesByCityAndDate(city, null)).thenReturn(sunriseSunset);
         mockMvc.perform(get("/api/solarwatch/sunrise-sunset?city=" + city))
                 .andExpect(status().isOk())

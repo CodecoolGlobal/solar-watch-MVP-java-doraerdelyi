@@ -1,7 +1,7 @@
 package com.codecool.solarwatch.service;
 
-import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
-import com.codecool.solarwatch.DTO.SunsetSunriseResponseDTO;
+import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
+import com.codecool.solarwatch.DTO.SunriseSunsetResponseDTO;
 import com.codecool.solarwatch.model.*;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
@@ -44,7 +44,7 @@ class SolarWatchServiceTest {
     private City testCity;
     private LocalDate testDate;
     private SunriseSunsetTime testSunriseSunsetTime;
-    private SunsetSunriseResponseDTO testApiResponse;
+    private SunriseSunsetResponseDTO testApiResponse;
 
     @BeforeEach
     void setUp() {
@@ -55,8 +55,8 @@ class SolarWatchServiceTest {
 
         testSunriseSunsetTime = new SunriseSunsetTime("06:30:00", "18:45:00", testDate, testCity);
 
-        testApiResponse = new SunsetSunriseResponseDTO(
-                new SunsetSunriseDTO("06:30:00", "18:45:00")
+        testApiResponse = new SunriseSunsetResponseDTO(
+                new SunriseSunsetDTO("06:30:00", "18:45:00")
         );
     }
 
@@ -66,7 +66,7 @@ class SolarWatchServiceTest {
         when(sunriseSunsetTimeRepository.findByCityIdAndDate(testCity.getId(), testDate))
                 .thenReturn(Optional.of(testSunriseSunsetTime));
 
-        SunsetSunriseDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
+        SunriseSunsetDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
 
         assertEquals("06:30:00", result.sunrise());
         assertEquals("18:45:00", result.sunset());
@@ -83,9 +83,9 @@ class SolarWatchServiceTest {
         when(webClient.get()).thenReturn(this.requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(this.requestHeadersUriSpec);
         when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(SunsetSunriseResponseDTO.class)).thenReturn(Mono.just(testApiResponse));
+        when(responseSpec.bodyToMono(SunriseSunsetResponseDTO.class)).thenReturn(Mono.just(testApiResponse));
 
-        SunsetSunriseDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
+        SunriseSunsetDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
 
         assertEquals("06:30:00", result.sunrise());
         assertEquals("18:45:00", result.sunset());
@@ -100,9 +100,9 @@ class SolarWatchServiceTest {
         when(webClient.get()).thenReturn(this.requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(SunsetSunriseResponseDTO.class)).thenReturn(Mono.just(testApiResponse));
+        when(responseSpec.bodyToMono(SunriseSunsetResponseDTO.class)).thenReturn(Mono.just(testApiResponse));
 
-        SunsetSunriseDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
+        SunriseSunsetDTO result = solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate);
 
         assertEquals("06:30:00", result.sunrise());
         assertEquals("18:45:00", result.sunset());
@@ -134,7 +134,7 @@ class SolarWatchServiceTest {
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(SunsetSunriseResponseDTO.class)).thenReturn(Mono.empty());
+        when(responseSpec.bodyToMono(SunriseSunsetResponseDTO.class)).thenReturn(Mono.empty());
 
         assertThrows(NoSunriseSunsetDataException.class, () ->
                 solarWatchService.getSunsetSunriseTimesByCityAndDate("Budapest", testDate)
