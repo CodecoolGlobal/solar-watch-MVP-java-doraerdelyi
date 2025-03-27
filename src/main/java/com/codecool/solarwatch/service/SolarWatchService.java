@@ -1,9 +1,6 @@
 package com.codecool.solarwatch.service;
 
-import com.codecool.solarwatch.DTO.CityCreateDTO;
-import com.codecool.solarwatch.DTO.CityDTO;
-import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
-import com.codecool.solarwatch.DTO.SunriseSunsetResponseDTO;
+import com.codecool.solarwatch.DTO.*;
 import com.codecool.solarwatch.model.*;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
@@ -13,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SolarWatchService {
@@ -51,7 +49,7 @@ public class SolarWatchService {
                 SunriseSunsetTime sunriseSunsetTime = convertToSunriseSunsetTime(response, currentDate, city);
                 this.sunriseSunsetTimeRepository.save(sunriseSunsetTime);
                 return new SunriseSunsetDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
-                }
+            }
         } else {
             City city = fetchCityFromAPI(cityName);
             this.cityRepository.save(city);
@@ -88,10 +86,49 @@ public class SolarWatchService {
     }
 
     public CityDTO createCity(CityCreateDTO cityCreateDTO) {
-        String state = cityCreateDTO.state() == null ? "" : cityCreateDTO.state();
+        String state = cityCreateDTO.state() == null ? "Unknown" : cityCreateDTO.state();
         City city = new City(cityCreateDTO.name(), cityCreateDTO.latitude(), cityCreateDTO.longitude(), cityCreateDTO.country(), state);
         this.cityRepository.save(city);
         return new CityDTO(city.getName(), city.getLatitude(), city.getLongitude(), city.getCountry(), city.getState());
     }
+
+    public CityDTO updateCity(UUID publicId, CityUpdateDTO cityUpdateDTO) {
+        String state = cityUpdateDTO.state() == null ? "Unknown" : cityUpdateDTO.state();
+        City city = this.cityRepository.findByPublicId(publicId).map(city -> {
+            city.setName(cityUpdateDTO.name());
+            city.setLatitude(cityUpdateDTO.latitude());
+            city.setLongitude(cityUpdateDTO.longitude());
+            city.setCountry(cityUpdateDTO.country());
+            city.setState(state);
+            return this.cityRepository.save(city);
+        }).orElseThrow(() -> new NoSuchCityException());
+        return new CityDTO(city.getName(), city.getLatitude(), city.getLongitude(), city.getCountry(), city.getState());
+    }
+
+    public void deleteCity(UUID publicId) {
+        this.cityRepository.deleteByPublicId(publicId);
+    }
+
+    public SunriseSunsetDTO createSunriseSunsetTimes(SunriseSunsetCreateDTO sunriseSunsetCreateDTO) {
+        City city = this.cityRepository.findByName(sunriseSunsetCreateDTO.cityName()).orElse(() -> fetchCityFromAPI(sunriseSunsetCreateDTO.cityName()));
+        SunriseSunsetTime sunriseSunsetTime = this.sunriseSunsetTimeRepository.save(new SunriseSunsetTime(sunriseSunsetCreateDTO.sunrise(), sunriseSunsetCreateDTO.sunset(), sunriseSunsetCreateDTO.date(), city));
+        return new SunriseSunsetDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
+    }
+
+    public SunriseSunsetDTO updateSunriseSunsetTimes(SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
+        City city = this.cityRepository.findByName(sunriseSunsetUpdateDTO.cityName()).get();
+        SunriseSunsetTime sunriseSunsetTime = this.sunriseSunsetTimeRepository.findByCityIdAndDate(city.getId(), sunriseSunsetUpdateDTO.date()).map(sunriseSunset -> {
+            sunriseSunset.setSunriseTime(sunriseSunsetUpdateDTO.sunrise());
+            sunriseSunset.setSunsetTime(sunriseSunsetUpdateDTO.sunset());
+            sunriseSunset.setDate(sunriseSunsetUpdateDTO.date());
+            return this.sunriseSunsetTimeRepository.save(sunriseSunset);
+        }).orElseThrow(NoSunriseSunsetDataException::new);
+        return new SunriseSunsetDTO(sunriseSunsetTime.getSunriseTime(), sunriseSunsetTime.getSunsetTime());
+    }
+
+    public void deleteSunriseSunsetTimes(UUID publicId) {
+        this.sunriseSunsetTimeRepository.deleteByPublicId(publicId);
+    }
+
 
 }
