@@ -63,4 +63,8 @@ public class SunriseSunsetTime {
     public void setSunsetTime(String sunsetTime) {
         this.sunsetTime = sunsetTime;
     }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }
