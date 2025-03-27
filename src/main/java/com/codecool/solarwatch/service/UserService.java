@@ -6,6 +6,7 @@ import com.codecool.solarwatch.DTO.UserLoginDTO;
 import com.codecool.solarwatch.model.Role;
 import com.codecool.solarwatch.model.RoleType;
 import com.codecool.solarwatch.model.SunriseSunsetUser;
+import com.codecool.solarwatch.repository.RoleRepository;
 import com.codecool.solarwatch.repository.UserRepository;
 import com.codecool.solarwatch.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
