@@ -2,10 +2,7 @@ package com.codecool.solarwatch.controller;
 
 import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
 import com.codecool.solarwatch.service.SolarWatchService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -25,5 +22,6 @@ public class SolarWatchController {
 date) {
         return solarWatchService.getSunsetSunriseTimesByCityAndDate(city, date);
     }
+
 
 }
