@@ -1,5 +1,7 @@
 package com.codecool.solarwatch.service;
 
+import com.codecool.solarwatch.DTO.CityCreateDTO;
+import com.codecool.solarwatch.DTO.CityDTO;
 import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
 import com.codecool.solarwatch.DTO.SunriseSunsetResponseDTO;
 import com.codecool.solarwatch.model.*;
@@ -84,4 +86,12 @@ public class SolarWatchService {
     private SunriseSunsetTime convertToSunriseSunsetTime(SunriseSunsetResponseDTO responseDTO, LocalDate date, City city) {
         return new SunriseSunsetTime(responseDTO.results().sunrise(), responseDTO.results().sunset(), date, city);
     }
+
+    public CityDTO createCity(CityCreateDTO cityCreateDTO) {
+        String state = cityCreateDTO.state() == null ? "" : cityCreateDTO.state();
+        City city = new City(cityCreateDTO.name(), cityCreateDTO.latitude(), cityCreateDTO.longitude(), cityCreateDTO.country(), state);
+        this.cityRepository.save(city);
+        return new CityDTO(city.getName(), city.getLatitude(), city.getLongitude(), city.getCountry(), city.getState());
+    }
+
 }
