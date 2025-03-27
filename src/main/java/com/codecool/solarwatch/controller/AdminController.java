@@ -23,7 +23,7 @@ public class AdminController {
 
     @PutMapping("/cities/{id}")
     public CityDTO updateCity(@PathVariable UUID id, @RequestBody CityUpdateDTO cityUpdateDTO) {
-        return this.solarWatchService.updateCity(cityUpdateDTO);
+        return this.solarWatchService.updateCity(id, cityUpdateDTO);
     }
 
     @DeleteMapping("/cities/{id}")
@@ -38,7 +38,7 @@ public class AdminController {
 
     @PutMapping("/cities/{id}")
     public SunriseSunsetDTO updateSunriseSunsetTimes(@PathVariable UUID id, @RequestBody SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
-        return this.solarWatchService.updateSunriseSunsetTimes(sunriseSunsetUpdateDTO);
+        return this.solarWatchService.updateSunriseSunsetTimes(id, sunriseSunsetUpdateDTO);
     }
 
     @DeleteMapping("/cities/{id}")
