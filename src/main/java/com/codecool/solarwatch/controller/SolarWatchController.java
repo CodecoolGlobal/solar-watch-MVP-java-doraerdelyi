@@ -1,6 +1,6 @@
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.DTO.SunsetSunriseDTO;
+import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
 import com.codecool.solarwatch.service.SolarWatchService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class SolarWatchController {
     }
 
     @GetMapping("/sunrise-sunset")
-    public SunsetSunriseDTO getSunriseAndSunset(@RequestParam String city, @RequestParam(required = false) LocalDate
+    public SunriseSunsetDTO getSunriseAndSunset(@RequestParam String city, @RequestParam(required = false) LocalDate
 date) {
         return solarWatchService.getSunsetSunriseTimesByCityAndDate(city, date);
     }
