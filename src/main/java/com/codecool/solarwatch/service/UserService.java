@@ -6,7 +6,7 @@ import com.codecool.solarwatch.DTO.UserLoginDTO;
 import com.codecool.solarwatch.model.Role;
 import com.codecool.solarwatch.model.RoleType;
 import com.codecool.solarwatch.model.SunriseSunsetUser;
-import com.codecool.solarwatch.repository.SunriseSunsetUserRepository;
+import com.codecool.solarwatch.repository.UserRepository;
 import com.codecool.solarwatch.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +24,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private final SunriseSunsetUserRepository sunriseSunsetUserRepository;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
 
     @Autowired
-    public UserService(SunriseSunsetUserRepository sunriseSunsetUserRepository, RoleRepository roleRepository, JwtUtils jwtUtils, AuthenticationManager authenticationManager, PasswordEncoder encoder) {
-        this.sunriseSunsetUserRepository = sunriseSunsetUserRepository;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, JwtUtils jwtUtils, AuthenticationManager authenticationManager, PasswordEncoder encoder) {
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
@@ -43,7 +43,7 @@ public class UserService {
     public void registerUser(UserCreateDTO userCreateDTO) {
         Role role = this.roleRepository.findByRoleType(RoleType.ROLE_USER).get();
         SunriseSunsetUser user = new SunriseSunsetUser(userCreateDTO.email(), userCreateDTO.password(), Set.of(role));
-        this.sunriseSunsetUserRepository.save(user);
+        this.userRepository.save(user);
     }
 
     public JwtResponseDTO loginUser(UserLoginDTO userLoginDTO) {
