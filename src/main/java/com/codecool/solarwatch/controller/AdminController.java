@@ -1,5 +1,6 @@
 package com.codecool.solarwatch.controller;
 
+import com.codecool.solarwatch.DTO.*;
 import com.codecool.solarwatch.service.SolarWatchService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class AdminController {
     }
 
     @PutMapping("/cities/{id}")
-    public CityDTO updateCity(@PathVariable id, @RequestBody CityUpdateDTO cityUpdateDTO) {
+    public CityDTO updateCity(@PathVariable UUID id, @RequestBody CityUpdateDTO cityUpdateDTO) {
         return this.solarWatchService.updateCity(cityUpdateDTO);
     }
 
