@@ -18,7 +18,7 @@ public class SolarWatchController {
     }
 
     @GetMapping("/sunrise-sunset")
-    public SunriseSunsetDTO getSunriseAndSunset(@RequestParam String city, @RequestParam(required = false) LocalDate
+    public SunriseSunsetDTO getSunriseAndSunset(@RequestParam(defaultValue = "Budapest") String city, @RequestParam(required = false) LocalDate
 date) {
         return solarWatchService.getSunsetSunriseTimesByCityAndDate(city, date);
     }
