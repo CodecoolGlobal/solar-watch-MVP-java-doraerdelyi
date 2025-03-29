@@ -70,13 +70,13 @@ public class ProtectedEndpointIT {
 
     @Test
     public void testProtectedEndpointUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/solarwatch"))
+        mockMvc.perform(get("/api/solarwatch/sunrise-sunset"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void testProtectedEndpointAuthorized() throws Exception {
-        mockMvc.perform(get("/api/solarwatch")
+        mockMvc.perform(get("/api/solarwatch/sunrise-sunset")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
