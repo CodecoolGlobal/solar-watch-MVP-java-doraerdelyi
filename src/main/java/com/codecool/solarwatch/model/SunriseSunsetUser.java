@@ -2,6 +2,7 @@ package com.codecool.solarwatch.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class SunriseSunsetUser {
     public SunriseSunsetUser(String email, String password, Set<Role> roles) {
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.roles = new HashSet<>(roles);
     }
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -40,6 +41,6 @@ public class SunriseSunsetUser {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return Set.copyOf(roles);
     }
 }
