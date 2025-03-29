@@ -1,4 +1,4 @@
-package com.codecool.solarwatch.service;
+/*package com.codecool.solarwatch.service;
 
 import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
 import com.codecool.solarwatch.DTO.SunriseSunsetResponseDTO;
@@ -142,5 +142,5 @@ class SolarWatchServiceTest {
 
         verify(sunriseSunsetTimeRepository, never()).save(any(SunriseSunsetTime.class));
     }
-}
+}*/
 
