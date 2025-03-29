@@ -26,12 +26,15 @@ public class JwtUtils {
     @Value("${jwt.expiration.ms}")
     private String jwtExpirationMs;
 
+
+
     public String generateJwtToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+        Long expirationTime = Long.parseLong(jwtExpirationMs);
         return Jwts.builder()
                 .subject(userPrincipal.getUsername())
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .expiration(new Date((new Date()).getTime() + expirationTime))
                 .signWith(key())
                 .compact();
     }

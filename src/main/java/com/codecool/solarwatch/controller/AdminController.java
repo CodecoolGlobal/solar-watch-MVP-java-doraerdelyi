@@ -2,6 +2,7 @@ package com.codecool.solarwatch.controller;
 
 import com.codecool.solarwatch.DTO.*;
 import com.codecool.solarwatch.service.SolarWatchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -12,6 +13,7 @@ public class AdminController {
 
     private final SolarWatchService solarWatchService;
 
+    @Autowired
     public AdminController(SolarWatchService solarWatchService) {
         this.solarWatchService = solarWatchService;
     }
