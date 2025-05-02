@@ -16,7 +16,7 @@ RUN ./mvnw dependency:go-offline
 COPY src src
 
 # Build the application
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean install
 
 # Copy the built JAR file
 COPY target/*.jar app.jar
