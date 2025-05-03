@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 function LoginForm({onLogin}) {
 
@@ -32,7 +33,7 @@ function LoginForm({onLogin}) {
                    onChange={(e) => setPassword(e.target.value)}
                    required
             />
-
+            <Link className="link link-primary" to={"/register"}>Don't have an account? Register here</Link>
             <button type="submit" className="btn btn-neutral mt-4">Login</button>
         </fieldset>
     </form>
