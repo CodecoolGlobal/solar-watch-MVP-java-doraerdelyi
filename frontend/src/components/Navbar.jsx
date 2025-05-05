@@ -1,6 +1,14 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "./AuthContext.jsx";
 
     function Navbar() {
+        const {isLoggedIn, logout} = useAuth();
+        const navigate = useNavigate();
+
+        function handleLogout() {
+            logout();
+            navigate("/login");
+        }
 
         return (
             <nav className="navbar bg-base-300 shadow-sm sticky top-0 z-50">
@@ -26,7 +34,7 @@ import {Link} from "react-router-dom";
                                 <li><Link to="/register">Register</Link></li>
                             </>) :
                             (<li>
-                                <button><Link to="/login">Logout</Link></button>
+                                <button onClick={handleLogout}>Logout</button>
                             </li>)}
                     </ul>
                 </div>
