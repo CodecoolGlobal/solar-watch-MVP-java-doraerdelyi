@@ -2,15 +2,17 @@ import SearchForm from "../components/SearchForm.jsx";
 import SunriseSunsetCard from "../components/SunriseSunsetCard.jsx";
 import {getFetch} from "../Service/apiService.js";
 import {useState} from "react";
+import {useAuth} from "../components/AuthContext.jsx";
 
 function SolarWatchPage() {
     const [sunrise, setSunrise] = useState("");
     const [sunset, setSunset] = useState("");
     const [city, setCity] = useState("");
     const [date, setDate] = useState("");
+    const {token} = useAuth();
 
     async function handleSearch(city, date) {
-        const sunriseSunsetData = await getFetch("api/solarwatch/sunrise-sunset", city, date, token);
+        const sunriseSunsetData = await getFetch("/api/solarwatch/sunrise-sunset", city, date, token);
         setSunrise(sunriseSunsetData.sunrise);
         setSunset(sunriseSunsetData.sunset);
         setCity(city);

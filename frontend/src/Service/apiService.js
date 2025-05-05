@@ -22,7 +22,7 @@ export async function getFetch(url, city, date, token) {
     const response = await fetch(`${url}?${queryParams.toString()}`, {
         method: "GET",
         headers: {
-            "Authorization": `Bearer ${token}`,
+            "Authorization": token ? `Bearer ${token}` : "",
             "Content-Type": "application/json"
         }
     });
