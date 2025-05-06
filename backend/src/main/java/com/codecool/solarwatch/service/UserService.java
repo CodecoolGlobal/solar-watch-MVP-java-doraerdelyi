@@ -6,6 +6,7 @@ import com.codecool.solarwatch.DTO.UserLoginDTO;
 import com.codecool.solarwatch.model.Role;
 import com.codecool.solarwatch.model.RoleType;
 import com.codecool.solarwatch.model.SunriseSunsetUser;
+import com.codecool.solarwatch.model.UserAlreadyExistsException;
 import com.codecool.solarwatch.repository.RoleRepository;
 import com.codecool.solarwatch.repository.UserRepository;
 import com.codecool.solarwatch.security.jwt.JwtUtils;
@@ -18,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,13 +42,29 @@ public class UserService {
         this.encoder = encoder;
     }
 
-
+    /**
+     * Registers a new user with the default user role.
+     *
+     * @param userCreateDTO UserCreateDTO data transfer object containing the email address and the password.
+     * @throws UserAlreadyExistsException if a user with the given email address already exists.
+     */
     public void registerUser(UserCreateDTO userCreateDTO) {
+        Optional<SunriseSunsetUser> existingUser = this.userRepository.findByEmail(userCreateDTO.email());
+        if (existingUser.isPresent()) {
+            throw new UserAlreadyExistsException();
+        }
         Role role = this.roleRepository.findByRoleType(RoleType.ROLE_USER).get();
-        SunriseSunsetUser user = new SunriseSunsetUser(userCreateDTO.email(), userCreateDTO.password(), Set.of(role));
+        String encodedPassword = encoder.encode(userCreateDTO.password());
+        SunriseSunsetUser user = new SunriseSunsetUser(userCreateDTO.email(), encodedPassword, Set.of(role));
         this.userRepository.save(user);
     }
 
+    /**
+     * Authenticates the user and generates a JWT token.
+     *
+     * @param userLoginDTO UserLoginDTO data transfer object containing login credentials.
+     * @return JwtResponseDTO data transfer object containing JWT token, username, and roles.
+     */
     public JwtResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.email(), userLoginDTO.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
