@@ -40,7 +40,7 @@ public class AdminController {
 
     @PutMapping("/sunrise-sunset/{id}")
     public SunriseSunsetDTO updateSunriseSunsetTimes(@PathVariable UUID id, @RequestBody SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
-        return this.solarWatchService.updateSunriseSunsetTimes(id, sunriseSunsetUpdateDTO);
+        return this.solarWatchService.updateSunriseSunsetTimes(sunriseSunsetUpdateDTO);
     }
 
     @DeleteMapping("/sunrise-sunset/{id}")
