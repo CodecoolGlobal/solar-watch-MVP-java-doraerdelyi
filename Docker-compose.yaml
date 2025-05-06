@@ -40,6 +40,6 @@ services:
     depends_on:
       - solar_backend
 
-  volumes:
-    postgres_data:
-      driver: local
+volumes:
+  postgres_data:
+    driver: local
