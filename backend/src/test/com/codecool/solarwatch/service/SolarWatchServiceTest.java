@@ -62,7 +62,7 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void returnsExistingTimeFromDb() {
+    void getSunsetSunriseTimes_returnsExistingTimeFromDb() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.of(city));
         when(timeRepository.findByCityIdAndDate(1L, date)).thenReturn(Optional.of(time));
         SunriseSunsetDTO result = service.getSunsetSunriseTimesByCityAndDate("TestCity", date);
@@ -73,9 +73,10 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void fetchesFromApiIfNotInDb() {
+    void getSunsetSunriseTimes_fetchesFromApiIfNotInDb() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.of(city));
         when(timeRepository.findByCityIdAndDate(1L, date)).thenReturn(Optional.empty());
+        when(timeRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         mockWebClientSunriseCall(responseDTO);
         SunriseSunsetDTO result = service.getSunsetSunriseTimesByCityAndDate("TestCity", date);
         assertEquals("06:00:00", result.sunrise());
@@ -83,7 +84,7 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void fetchesCityFromApiIfNotFound() {
+    void getSunsetSunriseTimes_fetchesCityFromApiIfNotFound() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.empty());
         when(cityRepository.save(any())).thenReturn(city);
         when(timeRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -96,14 +97,14 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void throwsIfCityApiReturnsEmpty() {
+    void getSunsetSunriseTimes_throwsIfCityApiReturnsEmpty() {
         when(cityRepository.findByName("Nowhere")).thenReturn(Optional.empty());
         mockWebClientCityCall(new City[]{});
         assertThrows(NoSuchCityException.class, () -> service.getSunsetSunriseTimesByCityAndDate("Nowhere", date));
     }
 
     @Test
-    void throwsIfSunriseApiReturnsNull() {
+    void getSunsetSunriseTimes_throwsIfSunriseApiReturnsNull() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.of(city));
         when(timeRepository.findByCityIdAndDate(1L, date)).thenReturn(Optional.empty());
         when(webClient.get()).thenReturn(uriSpec);
@@ -116,7 +117,7 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void createsCitySuccessfully() {
+    void createCity_createsCitySuccessfully() {
         CityCreateDTO dto = new CityCreateDTO("City", 1.0, 2.0, "Country", null);
         CityDTO result = service.createCity(dto);
         assertEquals("Unknown", result.state());
@@ -125,7 +126,7 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void updatesCitySuccessfully() {
+    void updateCity_updatesCitySuccessfully() {
         when(cityRepository.findByPublicId(publicId)).thenReturn(Optional.of(city));
         when(cityRepository.save(any(City.class))).thenAnswer(invocation -> invocation.getArgument(0));
         CityUpdateDTO dto = new CityUpdateDTO("NewName", 1.0, 2.0, "NewCountry", null);
@@ -137,7 +138,7 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void throwsIfCityToUpdateNotFound() {
+    void updateCity_throwsIfCityToUpdateNotFound() {
         when(cityRepository.findByPublicId(publicId)).thenReturn(Optional.empty());
         CityUpdateDTO dto = new CityUpdateDTO("NewName", 1.0, 2.0, "NewCountry", "State");
         assertThrows(NoSuchCityException.class, () -> service.updateCity(publicId, dto));
@@ -145,13 +146,13 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void deletesCityByPublicId() {
+    void deleteCity_deletesCityByPublicId() {
         service.deleteCity(publicId);
         verify(cityRepository).deleteByPublicId(publicId);
     }
 
     @Test
-    void createsSunriseSunsetTime() {
+    void createSunriseSunsetTimes_createsSunriseSunsetTimeSuccessfully() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.of(city));
         when(timeRepository.save(any(SunriseSunsetTime.class))).thenAnswer(invocation -> invocation.getArgument(0));
         SunriseSunsetCreateDTO dto = new SunriseSunsetCreateDTO("06:00:00", "18:00:00", "TestCity", date);
@@ -162,7 +163,7 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void createsSunriseSunsetTimeWithFetchedCity() {
+    void createSunriseSunsetTimes_createsSunriseSunsetTimeWithFetchedCity() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.empty());
         when(timeRepository.save(any(SunriseSunsetTime.class))).thenAnswer(invocation -> invocation.getArgument(0));
         mockWebClientCityCall(new City[]{city});
@@ -174,26 +175,26 @@ class SolarWatchServiceTest {
     }
 
     @Test
-    void updatesSunriseSunsetTime() {
+    void updateSunriseSunsetTimes_updatesSunriseSunsetTimeSuccessfully() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.of(city));
         when(timeRepository.findByCityIdAndDate(city.getId(), date)).thenReturn(Optional.of(time));
         when(timeRepository.save(any(SunriseSunsetTime.class))).thenAnswer(invocation -> invocation.getArgument(0));
         SunriseSunsetUpdateDTO dto = new SunriseSunsetUpdateDTO("07:00:00", "19:00:00", "TestCity", date);
-        SunriseSunsetDTO result = service.updateSunriseSunsetTimes(publicId, dto);
+        SunriseSunsetDTO result = service.updateSunriseSunsetTimes(dto);
         assertEquals("07:00:00", result.sunrise());
         verify(timeRepository).save(any());
     }
 
     @Test
-    void throwsWhenUpdatingMissingSunriseData() {
+    void updateSunriseSunsetTimes_throwsWhenMissingSunriseData() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.of(city));
         when(timeRepository.findByCityIdAndDate(city.getId(), date)).thenReturn(Optional.empty());
         SunriseSunsetUpdateDTO dto = new SunriseSunsetUpdateDTO("07:00:00", "19:00:00", "TestCity", date);
-        assertThrows(NoSunriseSunsetDataException.class, () -> service.updateSunriseSunsetTimes(publicId, dto));
+        assertThrows(NoSunriseSunsetDataException.class, () -> service.updateSunriseSunsetTimes(dto));
     }
 
     @Test
-    void deletesSunriseSunsetByPublicId() {
+    void deleteSunriseSunsetTimes_deletesSunriseSunsetByPublicId() {
         service.deleteSunriseSunsetTimes(publicId);
         verify(timeRepository).deleteByPublicId(publicId);
     }
