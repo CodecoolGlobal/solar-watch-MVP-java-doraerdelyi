@@ -1,10 +1,12 @@
 package com.codecool.solarwatch.service;
+
 import com.codecool.solarwatch.DTO.JwtResponseDTO;
 import com.codecool.solarwatch.DTO.UserCreateDTO;
 import com.codecool.solarwatch.DTO.UserLoginDTO;
 import com.codecool.solarwatch.model.Role;
 import com.codecool.solarwatch.model.RoleType;
 import com.codecool.solarwatch.model.SunriseSunsetUser;
+import com.codecool.solarwatch.model.UserAlreadyExistsException;
 import com.codecool.solarwatch.repository.RoleRepository;
 import com.codecool.solarwatch.repository.UserRepository;
 import com.codecool.solarwatch.security.jwt.JwtUtils;
@@ -17,13 +19,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.Set;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -44,9 +44,6 @@ public class UserServiceTest {
 
     @Mock
     private JwtUtils jwtUtils;
-
-    @Mock
-    private PasswordEncoder encoder;
 
     @InjectMocks
     private UserService userService;

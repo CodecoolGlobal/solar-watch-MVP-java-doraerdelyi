@@ -1,6 +1,5 @@
 package com.codecool.solarwatch.security.jwt;
 
-import io.netty.util.internal.StringUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,11 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -24,10 +21,9 @@ import java.io.IOException;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
-
-private final JwtUtils jwtUtils;
-private final UserDetailsService userDetailsService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+    private final JwtUtils jwtUtils;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
     public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsService userDetailsService) {
@@ -37,7 +33,7 @@ private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String userName = jwtUtils.getUserNameFromJwtToken(jwt);
@@ -54,12 +50,11 @@ private final UserDetailsService userDetailsService;
     }
 
     private String parseJwt(HttpServletRequest request) {
-      String headerAuth =  request.getHeader("Authorization");
-
-      String tokenPrefix = "Bearer ";
-      if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(tokenPrefix)) {
-        return headerAuth.substring(tokenPrefix.length());
-      }
-      return null;
+        String headerAuth = request.getHeader("Authorization");
+        String tokenPrefix = "Bearer ";
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(tokenPrefix)) {
+            return headerAuth.substring(tokenPrefix.length());
+        }
+        return null;
     }
 }

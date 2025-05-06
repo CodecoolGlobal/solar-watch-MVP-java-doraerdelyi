@@ -20,10 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.Set;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,7 +57,7 @@ public class ProtectedEndpointIT {
     }
 
     @BeforeEach
-     void setUp() throws Exception {
+    void setUp() throws Exception {
         userRepository.deleteAll();
         Role roleUser = roleRepository.findByRoleType(RoleType.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));

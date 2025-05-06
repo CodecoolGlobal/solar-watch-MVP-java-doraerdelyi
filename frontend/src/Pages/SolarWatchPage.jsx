@@ -1,8 +1,8 @@
-import SearchForm from "../components/SearchForm.jsx";
-import SunriseSunsetCard from "../components/SunriseSunsetCard.jsx";
+import SearchForm from "../Components/SearchForm.jsx";
+import SunriseSunsetCard from "../Components/SunriseSunsetCard.jsx";
 import {getFetch} from "../Service/apiService.js";
 import {useState} from "react";
-import {useAuth} from "../components/AuthContext.jsx";
+import {useAuth} from "../Components/AuthContext.jsx";
 
 function SolarWatchPage() {
     const [sunrise, setSunrise] = useState("");
@@ -18,6 +18,7 @@ function SolarWatchPage() {
         setCity(city);
         setDate(date);
     }
+
     return <div>
         <SearchForm onSearch={handleSearch}/>
         <SunriseSunsetCard city={city} date={date} sunriseTime={sunrise} sunsetTime={sunset}/>

@@ -1,13 +1,15 @@
 package com.codecool.solarwatch.service;
 
 import com.codecool.solarwatch.DTO.*;
-import com.codecool.solarwatch.model.*;
+import com.codecool.solarwatch.model.City;
+import com.codecool.solarwatch.model.NoSuchCityException;
+import com.codecool.solarwatch.model.NoSunriseSunsetDataException;
+import com.codecool.solarwatch.model.SunriseSunsetTime;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
