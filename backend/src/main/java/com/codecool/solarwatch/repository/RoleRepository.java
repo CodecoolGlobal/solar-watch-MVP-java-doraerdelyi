@@ -4,7 +4,6 @@ import com.codecool.solarwatch.model.Role;
 import com.codecool.solarwatch.model.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 
 @Repository
