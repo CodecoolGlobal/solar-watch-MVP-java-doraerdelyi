@@ -1,22 +1,27 @@
 package com.codecool.solarwatch.service;
+
 import com.codecool.solarwatch.DTO.*;
-import com.codecool.solarwatch.model.*;
+import com.codecool.solarwatch.model.City;
+import com.codecool.solarwatch.model.NoSuchCityException;
+import com.codecool.solarwatch.model.NoSunriseSunsetDataException;
+import com.codecool.solarwatch.model.SunriseSunsetTime;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.time.LocalDate;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
+import java.util.UUID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,7 +87,7 @@ class SolarWatchServiceTest {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.empty());
         when(cityRepository.save(any())).thenReturn(city);
         when(timeRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        mockWebClientCityCall(new City[]{ city });
+        mockWebClientCityCall(new City[]{city});
         mockWebClientSunriseCall(responseDTO);
         SunriseSunsetDTO result = service.getSunsetSunriseTimesByCityAndDate("TestCity", date);
         assertEquals("06:00:00", result.sunrise());
@@ -160,7 +165,7 @@ class SolarWatchServiceTest {
     void createsSunriseSunsetTimeWithFetchedCity() {
         when(cityRepository.findByName("TestCity")).thenReturn(Optional.empty());
         when(timeRepository.save(any(SunriseSunsetTime.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        mockWebClientCityCall(new City[]{ city });
+        mockWebClientCityCall(new City[]{city});
         SunriseSunsetCreateDTO dto = new SunriseSunsetCreateDTO("06:00:00", "18:00:00", "TestCity", date);
         SunriseSunsetDTO result = service.createSunriseSunsetTimes(dto);
         assertEquals("06:00:00", result.sunrise());
