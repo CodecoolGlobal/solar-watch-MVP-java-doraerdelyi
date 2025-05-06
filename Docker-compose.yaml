@@ -1,26 +1,45 @@
 services:
-  postgres:
-    image: postgres:17
-    container_name: solar_postgres
+  solar_db:
+    image: postgres:latest
+    container_name: solar_db
     restart: always
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: solar_watch
-    ports:
-      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-  solar-watch-app:
-    build: .
+  solar_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: solar_backend
     restart: always
     depends_on:
-      - postgres
+      - solar_db
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       JWT_SECRET: ${JWT_SECRET}
-      OPENWEATHER_API_KEY: ${API_KEY}
+      API_KEY: ${API_KEY}
+
+  solar_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: solar_frontend
+    restart: always
     ports:
-      - "8080:8080"
+      - "3000:80"
+    depends_on:
+      - solar_backend
+
+  volumes:
+    postgres_data:
+      driver: local
