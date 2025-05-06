@@ -2,11 +2,7 @@ package com.codecool.solarwatch.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.UUID;
 
 @Entity
@@ -26,13 +22,14 @@ public class SunriseSunsetTime {
     @JsonProperty("sunset")
     private String sunsetTime;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
 
     private LocalDate date;
 
-    public SunriseSunsetTime() {}
+    public SunriseSunsetTime() {
+    }
 
     public SunriseSunsetTime(String sunriseTime, String sunsetTime, LocalDate date, City city) {
         this.sunriseTime = sunriseTime;

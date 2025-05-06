@@ -2,8 +2,6 @@ package com.codecool.solarwatch.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -58,10 +56,6 @@ public class City {
         return id;
     }
 
-    public UUID getPublicId() {
-        return publicId;
-    }
-
     public String getName() {
         return name;
     }
@@ -100,5 +94,13 @@ public class City {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPublicId(UUID publicId) {
+        this.publicId = publicId;
     }
 }
