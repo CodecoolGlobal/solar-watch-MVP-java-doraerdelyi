@@ -2,6 +2,7 @@ package com.codecool.solarwatch.controller;
 
 import com.codecool.solarwatch.model.NoSuchCityException;
 import com.codecool.solarwatch.model.NoSunriseSunsetDataException;
+import com.codecool.solarwatch.model.UserAlreadyExistsException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,10 +17,7 @@ public class SolarWatchControllerAdvice {
     @ResponseBody
     @ExceptionHandler(NoSuchCityException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidCity(NoSuchCityException ex) {
-        System.out.println("Exception: " + ex.getMessage());
-        return ex.getMessage();
-    }
+    public String handleInvalidCity(NoSuchCityException ex) {return ex.getMessage();}
 
     @ResponseBody
     @ExceptionHandler(NoSunriseSunsetDataException.class)
@@ -39,6 +37,13 @@ public class SolarWatchControllerAdvice {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String handleBadCredentials(BadCredentialsException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleUserAlreadyExists(UserAlreadyExistsException ex) {
         return ex.getMessage();
     }
 }
