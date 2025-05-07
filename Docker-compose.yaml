@@ -15,7 +15,7 @@ services:
   solar_backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: backend/Dockerfile
     container_name: solar_backend
     restart: always
     depends_on:
@@ -31,8 +31,8 @@ services:
 
   solar_frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: frontend
+      dockerfile: backend/Dockerfile
     container_name: solar_frontend
     restart: always
     ports:
