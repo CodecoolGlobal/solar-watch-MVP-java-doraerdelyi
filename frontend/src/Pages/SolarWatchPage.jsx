@@ -11,8 +11,10 @@ function SolarWatchPage() {
     const [date, setDate] = useState("");
     const {token} = useAuth();
 
-    async function handleSearch(city, date) {
+    async function handleSearch(e, city, date) {
+        e.preventDefault();
         const sunriseSunsetData = await getFetch("/api/solarwatch/sunrise-sunset", city, date, token);
+        console.log(sunriseSunsetData);
         setSunrise(sunriseSunsetData.sunrise);
         setSunset(sunriseSunsetData.sunset);
         setCity(city);

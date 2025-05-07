@@ -3,12 +3,12 @@ import {Outlet} from 'react-router-dom';
 
 function Layout() {
     return (
-        <div>
+        <>
             <Navbar/>
-            <main className="p-4">
+            <main className="p-4 flex justify-center">
                 <Outlet/>
             </main>
-        </div>
+        </>
     );
 }
 
