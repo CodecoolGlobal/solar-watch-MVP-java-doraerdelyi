@@ -5,8 +5,8 @@ function SearchForm({onSearch}) {
     const [city, setCity] = useState("");
     const [date, setDate] = useState("");
 
-    function handleSearch() {
-        onSearch(city, date);
+    function handleSearch(e) {
+        onSearch(e, city, date);
     }
 
     return <form onSubmit={handleSearch} className="mt-8 flex gap-4">
