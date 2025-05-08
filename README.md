@@ -51,41 +51,33 @@
 
 ## Getting Started
 
+Follow the steps below to run the application locally using Docker.
+
 ### Prerequisites
 
-**Make sure you have Docker installed:**
-
-- #### Docker Desktop
-  ➡️ [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
+➡️ [Docker Desktop](https://www.docker.com/products/docker-desktop/) must be installed and running.
+➡️ An OpenWeather API key is required. You can [sign up here](https://home.openweathermap.org/users/sign_up).
 
 
 ### Installation Steps
 
-To get a local copy up and running, follow these steps:
+1. **Clone the Repository**
+   - Open a **terminal** and navigate to the directory where you want to store the project. Then run:
 
-1. Open a **terminal** and navigate to the directory where you would like to save the repository.
+```bash
+git clone https://github.com/CodecoolGlobal/solar-watch-MVP-java-doraerdelyi.git
+cd solar-watch-MVP-java-doraerdelyi
+```
 
-2. **Clone the repository** to your machine by executing the command below in your **terminal**, then proceed with one of the installation options below.
-   ```bash
-   git clone https://github.com/CodecoolGlobal/solar-watch-MVP-java-doraerdelyi.git
-   ```
-
-To simplify setup, an `example.env` file is already provided with the necessary **environment variables**, except the **API_KEY**.
-
-#### Docker
-
-1. **Ensure Docker is Running**
-    - Start **Docker Desktop** or the **Docker daemon** on your system.
-
-2. **Rename `.env` File**
-    - In the repository folder find the `.env` file
-    - Rename the `example.env` file to `.env`, simply remove the `example` part.
+2. **Rename `example.env` File**
+    - In the repository folder you can find the `example.env` file.
+    - Rename the `example.env` file to `.env` by simply removing the `example` part.
 
 3. **Add OpenWeather API Key**
-    - Add your OpenWeather API key to the **API_KEY** field in the `.env` file (you can request an api key here: https://home.openweathermap.org/users/sign_up)
+    - Add your OpenWeather API key to the **API_KEY** field in the `.env` file.
 
-4. **Create and Run Docker Container**
-    - Execute the following command in your terminal:
+4. **Start the Application with Docker**
+    - Execute the following command in your terminal to build and start the containers:
       ```bash
       docker compose up --build
       ```
@@ -123,7 +115,7 @@ To simplify setup, an `example.env` file is already provided with the necessary 
     - To choose a different date, use the date selector next to the input field **before** submitting your search.
 
 4. **Results are displayed**
-The application will return accurate **sunrise** and **sunset** times in UTC for the specified **city** and **date**.
+    - The application will return accurate **sunrise** and **sunset** times in UTC for the specified **city** and **date**.
 
 ## Acknowledgements
 
