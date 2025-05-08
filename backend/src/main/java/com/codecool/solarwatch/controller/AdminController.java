@@ -38,9 +38,9 @@ public class AdminController {
         return this.solarWatchService.createSunriseSunsetTimes(sunriseSunsetCreateDTO);
     }
 
-    @PutMapping("/sunrise-sunset/{id}")
-    public SunriseSunsetDTO updateSunriseSunsetTimes(@PathVariable UUID id, @RequestBody SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
-        return this.solarWatchService.updateSunriseSunsetTimes(sunriseSunsetUpdateDTO);
+    @PutMapping("/sunrise-sunset/{cityId}")
+    public SunriseSunsetDTO updateSunriseSunsetTimes(@PathVariable UUID cityId, @RequestBody SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
+        return this.solarWatchService.updateSunriseSunsetTimes(cityId, sunriseSunsetUpdateDTO);
     }
 
     @DeleteMapping("/sunrise-sunset/{id}")
