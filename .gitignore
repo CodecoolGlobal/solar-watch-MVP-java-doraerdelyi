@@ -46,3 +46,8 @@ Thumbs.db
 #env files
 .env
 /.env
+
+backend/.idea/
+backend/target/
+/backend/.idea/
+/backend/target/
