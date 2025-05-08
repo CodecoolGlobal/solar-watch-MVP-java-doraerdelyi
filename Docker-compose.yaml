@@ -32,7 +32,7 @@ services:
   solar_frontend:
     build:
       context: frontend
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
     container_name: solar_frontend
     restart: always
     ports:
