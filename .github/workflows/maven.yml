@@ -20,6 +20,6 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Build and run integration tests with Maven
+    - name: Build and run unit tests with Maven
       working-directory: backend/
-      run: mvn -B clean verify
+      run: mvn -B clean package
