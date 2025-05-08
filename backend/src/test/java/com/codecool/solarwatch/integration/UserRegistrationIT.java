@@ -1,7 +1,7 @@
 package com.codecool.solarwatch.integration;
 
 import com.codecool.solarwatch.DTO.UserCreateDTO;
-import com.codecool.solarwatch.model.SunriseSunsetUser;
+import com.codecool.solarwatch.model.user.SunriseSunsetUser;
 import com.codecool.solarwatch.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

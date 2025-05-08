@@ -2,12 +2,11 @@ package com.codecool.solarwatch.service;
 
 import com.codecool.solarwatch.DTO.*;
 import com.codecool.solarwatch.model.City;
-import com.codecool.solarwatch.model.NoSuchCityException;
-import com.codecool.solarwatch.model.NoSunriseSunsetDataException;
+import com.codecool.solarwatch.exception.NoSuchCityException;
+import com.codecool.solarwatch.exception.NoSunriseSunsetDataException;
 import com.codecool.solarwatch.model.SunriseSunsetTime;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
-import com.codecool.solarwatch.service.SolarWatchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

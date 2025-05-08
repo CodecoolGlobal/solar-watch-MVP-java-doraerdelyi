@@ -1,8 +1,8 @@
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.model.NoSuchCityException;
-import com.codecool.solarwatch.model.NoSunriseSunsetDataException;
-import com.codecool.solarwatch.model.UserAlreadyExistsException;
+import com.codecool.solarwatch.exception.NoSuchCityException;
+import com.codecool.solarwatch.exception.NoSunriseSunsetDataException;
+import com.codecool.solarwatch.exception.UserAlreadyExistsException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;

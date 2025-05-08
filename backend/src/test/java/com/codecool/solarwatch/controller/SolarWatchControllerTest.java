@@ -1,9 +1,7 @@
 package com.codecool.solarwatch.controller;
 
 import com.codecool.solarwatch.DTO.SunriseSunsetDTO;
-import com.codecool.solarwatch.controller.SolarWatchController;
-import com.codecool.solarwatch.controller.SolarWatchControllerAdvice;
-import com.codecool.solarwatch.model.NoSuchCityException;
+import com.codecool.solarwatch.exception.NoSuchCityException;
 import com.codecool.solarwatch.service.SolarWatchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
