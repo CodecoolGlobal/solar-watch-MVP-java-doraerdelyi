@@ -23,11 +23,9 @@ public class RoleInitializer implements CommandLineRunner {
         Set<RoleType> predefinedRoles = Set.of(RoleType.ROLE_USER, RoleType.ROLE_ADMIN);
 
         for (RoleType roleType : predefinedRoles) {
-            roleRepository.findByRoleType(roleType)
-                    .orElseGet(() -> {
-                        Role role = new Role(roleType);
-                        return roleRepository.save(role);
-                    });
+            if (roleRepository.findByRoleType(roleType).isEmpty()) {
+                roleRepository.save(new Role(roleType));
+            }
         }
     }
 }
