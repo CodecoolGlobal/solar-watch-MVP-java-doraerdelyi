@@ -1,9 +1,9 @@
 package com.codecool.solarwatch.integration;
 
 import com.codecool.solarwatch.DTO.UserLoginDTO;
-import com.codecool.solarwatch.model.Role;
-import com.codecool.solarwatch.model.RoleType;
-import com.codecool.solarwatch.model.SunriseSunsetUser;
+import com.codecool.solarwatch.model.user.Role;
+import com.codecool.solarwatch.model.user.RoleType;
+import com.codecool.solarwatch.model.user.SunriseSunsetUser;
 import com.codecool.solarwatch.repository.RoleRepository;
 import com.codecool.solarwatch.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

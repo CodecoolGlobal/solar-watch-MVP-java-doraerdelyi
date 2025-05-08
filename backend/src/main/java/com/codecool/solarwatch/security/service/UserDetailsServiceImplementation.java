@@ -1,7 +1,7 @@
 package com.codecool.solarwatch.security.service;
 
-import com.codecool.solarwatch.model.Role;
-import com.codecool.solarwatch.model.SunriseSunsetUser;
+import com.codecool.solarwatch.model.user.Role;
+import com.codecool.solarwatch.model.user.SunriseSunsetUser;
 import com.codecool.solarwatch.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

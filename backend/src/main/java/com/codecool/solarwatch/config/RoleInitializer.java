@@ -1,7 +1,7 @@
 package com.codecool.solarwatch.config;
 
-import com.codecool.solarwatch.model.Role;
-import com.codecool.solarwatch.model.RoleType;
+import com.codecool.solarwatch.model.user.Role;
+import com.codecool.solarwatch.model.user.RoleType;
 import com.codecool.solarwatch.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
