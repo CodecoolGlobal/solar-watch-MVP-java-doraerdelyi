@@ -115,8 +115,8 @@ public class SolarWatchService {
      * @param sunriseSunsetCreateDTO data transfer object containing the sunrise/sunset data to create
      * @return created sunrise and sunset time data as a data transfer object
      */
-    public SunriseSunsetDTO createSunriseSunsetTimes(SunriseSunsetCreateDTO sunriseSunsetCreateDTO) {
-        City city = this.cityRepository.findByName(sunriseSunsetCreateDTO.cityName())
+    public SunriseSunsetDTO createSunriseSunsetTimes(UUID publicCityId, SunriseSunsetCreateDTO sunriseSunsetCreateDTO) {
+        City city = this.cityRepository.findByPublicId(publicCityId)
                 .orElseGet(() -> saveCityFromAPI(sunriseSunsetCreateDTO.cityName()));
         SunriseSunsetTime sunriseSunsetTime = this.sunriseSunsetTimeRepository
                 .save(new SunriseSunsetTime(sunriseSunsetCreateDTO.sunrise(),
@@ -136,8 +136,8 @@ public class SolarWatchService {
      * @throws NoSuchCityException          if the city does not exist
      * @throws NoSunriseSunsetDataException if the sunrise/sunset data cannot be found
      */
-    public SunriseSunsetDTO updateSunriseSunsetTimes(SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
-        City city = this.cityRepository.findByName(sunriseSunsetUpdateDTO.cityName())
+    public SunriseSunsetDTO updateSunriseSunsetTimes(UUID cityPublicId, SunriseSunsetUpdateDTO sunriseSunsetUpdateDTO) {
+        City city = this.cityRepository.findByPublicId(cityPublicId)
                 .orElseThrow(NoSuchCityException::new);
         SunriseSunsetTime sunriseSunsetTime = this.sunriseSunsetTimeRepository.findByCityIdAndDate(city.getId(), sunriseSunsetUpdateDTO.date())
                 .map(sunriseSunset -> {

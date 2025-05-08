@@ -33,9 +33,9 @@ public class AdminController {
         this.solarWatchService.deleteCity(id);
     }
 
-    @PostMapping("/sunrise-sunset")
-    public SunriseSunsetDTO createSunriseSunsetTimes(@RequestBody SunriseSunsetCreateDTO sunriseSunsetCreateDTO) {
-        return this.solarWatchService.createSunriseSunsetTimes(sunriseSunsetCreateDTO);
+    @PostMapping("/sunrise-sunset/{cityId}")
+    public SunriseSunsetDTO createSunriseSunsetTimes(@PathVariable UUID cityId, @RequestBody SunriseSunsetCreateDTO sunriseSunsetCreateDTO) {
+        return this.solarWatchService.createSunriseSunsetTimes(cityId, sunriseSunsetCreateDTO);
     }
 
     @PutMapping("/sunrise-sunset/{cityId}")
