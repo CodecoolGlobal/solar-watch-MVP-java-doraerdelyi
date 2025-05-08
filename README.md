@@ -55,7 +55,7 @@ Follow the steps below to run the application locally using Docker.
 
 ### Prerequisites
 
-➡️ [Docker Desktop](https://www.docker.com/products/docker-desktop/) must be installed and running.
+➡️ [Docker Desktop](https://www.docker.com/products/docker-desktop/) must be installed and running.  
 ➡️ An OpenWeather API key is required. You can [sign up here](https://home.openweathermap.org/users/sign_up).
 
 
