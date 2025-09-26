@@ -56,7 +56,7 @@ public class UserService {
         Role role = this.roleRepository.findByRoleType(RoleType.ROLE_USER).get();
         String encodedPassword = encoder.encode(userCreateDTO.password());
         SunriseSunsetUser user = new SunriseSunsetUser(userCreateDTO.email(), encodedPassword, Set.of(role));
-        this.userRepository.save(user);
+        //this.userRepository.save(user);
     }
 
     /**
